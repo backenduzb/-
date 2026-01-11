@@ -1,6 +1,6 @@
 from config.choicer import start_sticker
 from config.settings import START_STICKERS
-from filters.message import AdminSaysChiin
+from filters.message import AdminSaysChiin, OthersSaysChiin
 from utils.imports import *
 
 router = Router()
@@ -40,5 +40,13 @@ async def bussines_start(message: types.Message, bot: Bot):
     await message.answer_sticker(await start_sticker())
     msg = await write(
         "こんいちわ, Javohir qanaqasiz!",
+        message=message
+    )
+
+@router.business_message(OthersSaysChiin())
+async def bussines_start(message: types.Message, bot: Bot):
+    
+    msg = await write(
+        f"Assalomu alaykum {message.from_user.first_name}, qanday savollaringiz bor?",
         message=message
     )
