@@ -5,6 +5,10 @@ from config.settings import (
     DEBUG,
 )
 from handlers import start
+from handlers.commands import story
+from handlers.admin import (
+    auto_m
+)
 import asyncio
 
 if DEBUG:
@@ -19,9 +23,14 @@ async def main():
         token=BOT_TOKEN,
         default=BOT_PROPERTIEST,
     )
-    dp.include_router(start.router)
+    dp.include_routers(
+        start.router,
+        auto_m.router,
+        story.router,
+    )
     
-    await dp.start_polling(bot)
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot, drop_pending_updates=True)
     
 if __name__ == "__main__":
     asyncio.run(main())

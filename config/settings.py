@@ -1,11 +1,13 @@
+import os
+
 from aiogram.client.default import DefaultBotProperties
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
 DEBUG = True
 
+ADMIN_NAME = os.getenv("ADMIN_NAME")
 ADMIN_ID = 6400925437
 
 START_STICKERS = [
@@ -16,6 +18,6 @@ START_STICKERS = [
 
 BOT_TOKEN = os.getenv("BOT_TOKEN") or ""
 
-BOT_PROPERTIEST = DefaultBotProperties(
-    parse_mode="html"
-)
+BS_ID = os.getenv("BUSSINES_CONNECTION_ID")
+
+BOT_PROPERTIEST = DefaultBotProperties(parse_mode="html")

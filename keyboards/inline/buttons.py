@@ -10,3 +10,7 @@ async def connections_button() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=buttons,
     )
+
+async def bot_button() -> InlineKeyboardMarkup:
+    
+    return InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Men haqimda", url='https://t.me/python_de_bot')]])

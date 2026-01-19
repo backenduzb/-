@@ -4,6 +4,13 @@ from filters.message import AdminSaysChiin, OthersSaysChiin
 from utils.imports import *
 
 router = Router()
+from aiogram.types import BusinessConnection
+
+# router = Router()
+
+@router.business_connection()
+async def on_bc(bc: BusinessConnection):
+    print("BC ID:", bc.id)
 
 @router.message(Command("start"))
 async def start(message: types.Message, bot: Bot):

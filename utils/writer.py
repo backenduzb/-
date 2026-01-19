@@ -19,3 +19,4 @@ async def write(text: str, message):
             print("WRITE ERROR:", e)
             break
 
+    return msg
