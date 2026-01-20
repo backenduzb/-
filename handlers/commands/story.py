@@ -59,6 +59,7 @@ async def check_and_upload( message: types.Message, state: FSMContext, bot: Bot)
             await message.react([types.ReactionTypeEmoji(emoji="😢")])
             await message.answer_sticker("CAACAgIAAxkBAAEaNiRpbkWQ3KJTPq99JqU0TsC0B8M3VQAC3D0AArc_8EhpmZXV6BW7-TgE")
             await state.clear()
+            return
     
     if not response:
             await message.react([types.ReactionTypeEmoji(emoji="😢")])
