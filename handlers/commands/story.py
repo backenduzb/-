@@ -23,8 +23,8 @@ async def story_from_video(message: types.Message, state: FSMContext,bot: Bot):
 @router.message(AdminState.waiting_admin_response)
 async def check_and_upload( message: types.Message, state: FSMContext, bot: Bot):
     text = str(message.text).lower()
-    
-    if "ha" in text or "h" in text or "upload qil" in text or "albatta" in text:
+    response = False
+    if "ha" in text or "upload qil" in text or "albatta" in text:
         async with ChatActionSender(
             bot=bot, chat_id=message.from_user.id, action=ChatAction.CHOOSE_STICKER
         ):
@@ -38,25 +38,43 @@ async def check_and_upload( message: types.Message, state: FSMContext, bot: Bot)
             await message.react([types.ReactionTypeEmoji(emoji="👌")])
             await write(message=message, text="Unaqada storyingizni upload qilayapman.")
             
+        data = await state.get_data()
+        file_id = data.get("file_id")
+        caption = data.get("caption")
+          
         async with ChatActionSender(
             bot=bot,chat_id=message.chat.id, action=ChatAction.UPLOAD_VIDEO
                     ):
-            data = await state.get_data()
-            file_id = data.get("file_id")
-            caption = data.get("caption")
-            print(file_id)
-            print(caption)
-            await post_story(
+            response = await post_story(
                 caption=caption or "Posted with @python_de_bot",
                 video_file_id=file_id or "",
                 message=message,
                 life_time=86400
             )
-    else:
+
+    elif "yo'q" in text or "kerak emas" in text or "emas" in text:
         async with ChatActionSender(
             bot=bot, chat_id=message.from_user.id, action=ChatAction.CHOOSE_STICKER
         ):
-            "CAACAgIAAxkBAAEaNiRpbkWQ3KJTPq99JqU0TsC0B8M3VQAC3D0AArc_8EhpmZXV6BW7-TgE"
             await message.react([types.ReactionTypeEmoji(emoji="😢")])
             await message.answer_sticker("CAACAgIAAxkBAAEaNiRpbkWQ3KJTPq99JqU0TsC0B8M3VQAC3D0AArc_8EhpmZXV6BW7-TgE")
             await state.clear()
+    
+    if not response:
+            await message.react([types.ReactionTypeEmoji(emoji="😢")])
+            async with ChatActionSender(
+                bot=bot, chat_id=message.from_user.id, action=ChatAction.CHOOSE_STICKER
+            ):
+                await message.answer_sticker("CAACAgIAAxkBAAEaNiRpbkWQ3KJTPq99JqU0TsC0B8M3VQAC3D0AArc_8EhpmZXV6BW7-TgE")
+            async with ChatActionSender(
+                bot=bot, chat_id=message.from_user.id, action=ChatAction.TYPING
+            ):   
+                await write(message=message, text="Uzur storyingizni post qila olmadim.")
+            await state.clear()
+            return
+        
+    await message.react([types.ReactionTypeEmoji(emoji='🔥')])
+    async with ChatActionSender(
+                bot=bot, chat_id=message.from_user.id, action=ChatAction.TYPING
+    ):
+        await write(message=message, text="Storyingini upload qildim")
